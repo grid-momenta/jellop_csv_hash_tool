@@ -33,8 +33,13 @@ def main(page: Page):
         df = pd.read_csv(csv_location.value, encoding="ISO-8859-1")
         first_header = list(df.columns)[0]
 
-        # hashing the 'Password' column
-        df[first_header] = df[first_header].apply(lambda x: hashlib.sha256(str(x).encode('utf-8')).hexdigest())
+        # hashing the first column
+        if hash_choice.value == "sha256":
+            df[first_header] = df[first_header].apply(lambda x: hashlib.sha256(str(x).encode('utf-8')).hexdigest())
+        elif hash_choice.value == "sha1":
+            df[first_header] = df[first_header].apply(lambda x: hashlib.sha1(str(x).encode('utf-8')).hexdigest())
+        elif hash_choice.value == "md5":
+            df[first_header] = df[first_header].apply(lambda x: hashlib.md5(str(x).encode('utf-8')).hexdigest())
 
         dir_name = os.path.dirname(csv_location.value)
         if not os.path.exists(dir_name):
@@ -53,6 +58,16 @@ def main(page: Page):
 
         return
 
+    hash_choice = RadioGroup(
+        content=Column([
+            Radio(value="md5", label="MD5"),
+            Radio(value="sha1", label="SHA1"),
+            Radio(value="sha256", label="SHA256")]
+        )
+    )
+
+    hash_choice.value = "sha256"
+
     page.add(
         Column([
             Column([
@@ -62,6 +77,8 @@ def main(page: Page):
                     on_click=lambda _: my_picker1.pick_files(allow_multiple=False)
                 ),
                 csv_location,
+                Text("Select hash method:"),
+                hash_choice,
                 ElevatedButton(
                     "Hash",
                     on_click=process_hashing
