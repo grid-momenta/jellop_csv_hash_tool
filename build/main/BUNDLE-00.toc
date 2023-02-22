@@ -1,0 +1,3 @@
+([('main',
+   '/Users/jps/Documents/jellop_csv_hash_tool/dist/main',
+   'EXECUTABLE')],)
