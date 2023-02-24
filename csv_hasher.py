@@ -13,21 +13,20 @@ def hash_csv(csv_path, hash_method):
     if not os.path.exists(csv_path):
         raise Exception("path does not exist")
 
-    col_names = ["id", "email_1", "country db", "state", "city", "name", "G", "H", "I", "J"]
-
-    df = pd.read_csv(csv_path, encoding="ISO-8859-1", names=col_names, engine="python")
+    df = pd.read_csv(csv_path, encoding="ISO-8859-1", usecols=range(6))
+    first_header = list(df.columns)[0]
 
     # hashing the first column
     if hash_method == "sha256":
-        df["id"] = df["id"].apply(
+        df[first_header] = df[first_header].apply(
             lambda x: hashlib.sha256(str(x).encode("utf-8")).hexdigest()
         )
     elif hash_method == "sha1":
-        df["id"] = df["id"].apply(
+        df[first_header] = df[first_header].apply(
             lambda x: hashlib.sha1(str(x).encode("utf-8")).hexdigest()
         )
     elif hash_method == "md5":
-        df["id"] = df["id"].apply(
+        df[first_header] = df[first_header].apply(
             lambda x: hashlib.md5(str(x).encode("utf-8")).hexdigest()
         )
 
@@ -41,7 +40,7 @@ def hash_csv(csv_path, hash_method):
     save_file = f"{dir_name}/{file_name}_hashed{file_extension}"
 
     # writing the new CSV output
-    df.iloc[1:].to_csv(save_file, columns=["id", "email_1", "country db", "state", "city", "name"], index=False)
+    df.to_csv(save_file, index=False)
     return save_file
 
 
