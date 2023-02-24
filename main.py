@@ -3,7 +3,7 @@ from flet import *
 import os
 import pandas as pd
 import hashlib
-
+from csv_hasher import hash_csv
 
 def main(page: Page):
     page.padding = 20
@@ -30,28 +30,7 @@ def main(page: Page):
             result.update()
             return
 
-        df = pd.read_csv(csv_location.value, encoding="ISO-8859-1")
-        first_header = list(df.columns)[0]
-
-        # hashing the first column
-        if hash_choice.value == "sha256":
-            df[first_header] = df[first_header].apply(lambda x: hashlib.sha256(str(x).encode('utf-8')).hexdigest())
-        elif hash_choice.value == "sha1":
-            df[first_header] = df[first_header].apply(lambda x: hashlib.sha1(str(x).encode('utf-8')).hexdigest())
-        elif hash_choice.value == "md5":
-            df[first_header] = df[first_header].apply(lambda x: hashlib.md5(str(x).encode('utf-8')).hexdigest())
-
-        dir_name = os.path.dirname(csv_location.value)
-        if not os.path.exists(dir_name):
-            os.makedirs(dir_name)
-
-        _, tail = os.path.split(csv_location.value)
-        file_name, file_extension = os.path.splitext(tail)
-
-        save_file = f"{dir_name}/{file_name}_hashed{file_extension}"
-
-        # writing the new CSV output
-        df.to_csv(save_file, index=False)
+        save_file = hash_csv(csv_location.value, hash_choice.value)
 
         result.value = f"Hash completed. File saved to {save_file}"
         result.update()
