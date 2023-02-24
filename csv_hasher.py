@@ -16,19 +16,18 @@ def hash_csv(csv_path, hash_method):
     col_names = ["IDs", "Email", "Country", "State", "City", "Full name", "G", "H", "I", "J"]
 
     df = pd.read_csv(csv_path, encoding="ISO-8859-1", names=col_names, engine="python")
-    first_header = list(df.columns)[0]
 
     # hashing the first column
     if hash_method == "sha256":
-        df[first_header] = df[first_header].apply(
+        df["IDs"] = df["IDs"].apply(
             lambda x: hashlib.sha256(str(x).encode("utf-8")).hexdigest()
         )
     elif hash_method == "sha1":
-        df[first_header] = df[first_header].apply(
+        df["IDs"] = df["IDs"].apply(
             lambda x: hashlib.sha1(str(x).encode("utf-8")).hexdigest()
         )
     elif hash_method == "md5":
-        df[first_header] = df[first_header].apply(
+        df["IDs"] = df["IDs"].apply(
             lambda x: hashlib.md5(str(x).encode("utf-8")).hexdigest()
         )
 
