@@ -11,7 +11,9 @@ def hash_csv(csv_path, hash_method):
     if not os.path.exists(csv_path):
         raise Exception("path does not exist")
 
-    df = pd.read_csv(csv_path, encoding="ISO-8859-1", on_bad_lines="skip")
+    col_names = ["IDs", "Email", "Country", "State", "City", "Full name", "G", "H", "I", "J"]
+
+    df = pd.read_csv(csv_path, encoding="ISO-8859-1", names=col_names, engine="python")
     first_header = list(df.columns)[0]
 
     # hashing the first column
@@ -38,7 +40,7 @@ def hash_csv(csv_path, hash_method):
     save_file = f"{dir_name}/{file_name}_hashed{file_extension}"
 
     # writing the new CSV output
-    df.to_csv(save_file, index=False)
+    df.to_csv(save_file, columns=["IDs", "Email", "Country", "State", "City", "Full name"], index=False)
     return save_file
 
 
