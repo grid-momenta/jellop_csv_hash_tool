@@ -1,6 +1,8 @@
-import os, sys
-import pandas as pd
 import hashlib
+import os
+import sys
+
+import pandas as pd
 
 VALID_HASH_TYPES = ["sha256", "sha1", "md5"]
 
@@ -52,7 +54,7 @@ def main():
         print("Bad CSV path \n")
         return 1
 
-    if not hash_type in VALID_HASH_TYPES:
+    if hash_type not in VALID_HASH_TYPES:
         print("Bad hash type \n")
         return 1
     saved_file = hash_csv(csv_path, hash_type)

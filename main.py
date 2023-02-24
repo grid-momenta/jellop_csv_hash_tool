@@ -1,9 +1,7 @@
 import flet_core.icons
 from flet import *
-import os
-import pandas as pd
-import hashlib
 from csv_hasher import hash_csv
+
 
 def main(page: Page):
     page.padding = 20
