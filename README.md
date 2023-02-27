@@ -48,7 +48,7 @@ python csv_hasher.py ./test_data/CSV-1-short.csv sha1
 
 ```shell
 flet pack main.py
-flet pack main.py --product-name "Jellop CSV Tool" --product-version "0.0.1" --copyright "Copyright @ Jellop 2023" --bundle-id "com.jellop.csv_hash_tool"
+flet pack main.py --product-name "Jellop CSV Hash Tool" --product-version "0.0.1" --copyright "Copyright @ Jellop 2023" --bundle-id "com.jellop.csv_hash_tool"
 ```
 
 For more details check [flet.dev docs](https://flet.dev/docs/guides/python/packaging-desktop-app)
